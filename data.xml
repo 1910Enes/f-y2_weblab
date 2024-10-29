@@ -1,0 +1,26 @@
+<catalog>
+   <student>
+      <numara>1923</numara>
+      <adsoyad>Enes KOYUNCU</adsoyad>
+      <bolum>Bilgisayar Mühendisliği</bolum>
+      <sinif>4</sinif>
+   </student>
+   <student>
+      <numara>1461</numara>
+      <adsoyad>Ahmet AKDENİZ</adsoyad>
+      <bolum>Kimya Mühendisliği</bolum>
+      <sinif>3</sinif>
+   </student>
+   <student>
+      <numara>1453</numara>
+      <adsoyad>Oğulcem Yıldız</adsoyad>
+      <bolum>Makine Mühendisliği</bolum>
+      <sinif>3</sinif>
+   </student>
+   <student>
+      <numara>1910</numara>
+      <adsoyad>Ceren KOÇAK</adsoyad>
+      <bolum>Diş Hekimliği</bolum>
+      <sinif>5</sinif>
+   </student>
+</catalog>

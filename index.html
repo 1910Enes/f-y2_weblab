@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+   <meta charset="UTF-8">
+   <title>Öğrenci Bilgileri</title>
+   <style>
+      /* Genel Stil */
+      body {
+         font-family: Arial, sans-serif;
+         background-color: #f4f4f9;
+         color: #333;
+         margin: 20px;
+      }
+
+      h3 {
+         color: #333;
+         font-size: 24px;
+      }
+
+      #studentInfo {
+         margin-bottom: 20px;
+         padding: 10px;
+         border: 1px solid #ccc;
+         background-color: #fafafa;
+         border-radius: 5px;
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Tablo Stili */
+      table {
+         width: 100%;
+         max-width: 600px;
+         margin: 20px 0;
+         border-collapse: collapse;
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      th, td {
+         padding: 12px;
+         text-align: left;
+         border-bottom: 1px solid #ddd;
+      }
+
+      th {
+         background-color: #4CAF50;
+         color: white;
+         font-weight: bold;
+         text-transform: uppercase;
+      }
+
+      tr:nth-child(even) {
+         background-color: #f9f9f9;
+      }
+
+      tr:hover {
+         background-color: #d0eaf3;
+         cursor: pointer;
+      }
+
+      td:hover {
+         background-color: #c8e6e7;
+      }
+   </style>
+</head>
+<body>
+   <h3>Öğrenciye Tıklandığında Bilgilerin Ekrana Getirilmesi</h3>
+   <div id="studentInfo"></div>
+   <table id="studentTable">
+      <tr>
+         <th>Numara</th>
+         <th>AdSoyad</th>
+      </tr>
+   </table>
+
+   <script>
+      function loadXMLDoc() {
+         const xhttp = new XMLHttpRequest();
+         xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+               displayStudents(this);
+            }
+         };
+         xhttp.open("GET", "data.xml", true);
+         xhttp.send();
+      }
+
+      function displayStudents(xml) {
+         const xmlDoc = xml.responseXML;
+         const students = xmlDoc.getElementsByTagName("student");
+         const table = document.getElementById("studentTable");
+
+         for (let i = 0; i < students.length; i++) {
+            const numara = students[i].getElementsByTagName("numara")[0].childNodes[0].nodeValue;
+            const adsoyad = students[i].getElementsByTagName("adsoyad")[0].childNodes[0].nodeValue;
+
+            const row = document.createElement("tr");
+            row.onclick = function() { displayStudentDetails(numara); };
+
+            const cellNumara = document.createElement("td");
+            cellNumara.textContent = numara;
+
+            const cellAdSoyad = document.createElement("td");
+            cellAdSoyad.textContent = adsoyad;
+
+            row.appendChild(cellNumara);
+            row.appendChild(cellAdSoyad);
+            table.appendChild(row);
+         }
+      }
+
+      function displayStudentDetails(numara) {
+         const xhttp = new XMLHttpRequest();
+         xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+               const xmlDoc = this.responseXML;
+               const students = xmlDoc.getElementsByTagName("student");
+
+               for (let i = 0; i < students.length; i++) {
+                  if (students[i].getElementsByTagName("numara")[0].childNodes[0].nodeValue == numara) {
+                     const adsoyad = students[i].getElementsByTagName("adsoyad")[0].childNodes[0].nodeValue;
+                     const bolum = students[i].getElementsByTagName("bolum")[0].childNodes[0].nodeValue;
+                     const sinif = students[i].getElementsByTagName("sinif")[0].childNodes[0].nodeValue;
+
+                     document.getElementById("studentInfo").innerHTML =
+                        `<h3>Öğrenci Bilgileri</h3>
+                         <p>Numara: ${numara}</p>
+                         <p>AdSoyad: ${adsoyad}</p>
+                         <p>Bölüm: ${bolum}</p>
+                         <p>Sınıf: ${sinif}</p>`;
+                  }
+               }
+            }
+         };
+         xhttp.open("GET", "data.xml", true);
+         xhttp.send();
+      }
+
+      // Sayfa yüklendiğinde öğrenci listesini yükle
+      window.onload = loadXMLDoc;
+   </script>
+</body>
+</html>
